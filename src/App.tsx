@@ -3,9 +3,9 @@ import { AppProvider } from './context/AppContext';
 import { Layout } from './components/layout/Layout';
 import { HomePage } from './pages/HomePage';
 import { DashboardPage } from './pages/DashboardPage';
-import { LessonsPage } from './pages/LessonsPage';
 import { FlashcardsPage } from './pages/FlashcardsPage';
-import { QuizPage } from './pages/QuizPage';
+import { ArticlesPage } from './pages/ArticlesPage';
+import { SynonymsPage } from './pages/SynonymsPage';
 
 export default function App() {
   return (
@@ -15,9 +15,9 @@ export default function App() {
           <Routes>
             <Route path="/"           element={<HomePage />} />
             <Route path="/dashboard"  element={<DashboardPage />} />
-            <Route path="/lessons"    element={<LessonsPage />} />
             <Route path="/flashcards" element={<FlashcardsPage />} />
-            <Route path="/quiz"       element={<QuizPage />} />
+            <Route path="/articles"   element={<ArticlesPage />} />
+            <Route path="/synonyms"   element={<SynonymsPage />} />
           </Routes>
         </Layout>
       </AppProvider>

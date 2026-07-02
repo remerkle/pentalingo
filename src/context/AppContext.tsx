@@ -7,14 +7,12 @@ type AppContextType = {
   selectedLanguage: Language;
   setSelectedLanguage: (lang: Language) => void;
   addXp: (amount: number) => void;
-  completeLesson: (lessonId: string) => void;
 };
 
 const defaultProgress: UserProgress = {
   streak: 7,
   xp: 340,
   level: 3,
-  completedLessons: ['es-1', 'es-2'],
   dailyGoal: 50,
   todayXp: 20,
 };
@@ -33,15 +31,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }));
   }
 
-  function completeLesson(lessonId: string) {
-    setProgress(prev => ({
-      ...prev,
-      completedLessons: [...prev.completedLessons, lessonId],
-    }));
-  }
-
   return (
-    <AppContext.Provider value={{ progress, selectedLanguage, setSelectedLanguage, addXp, completeLesson }}>
+    <AppContext.Provider value={{ progress, selectedLanguage, setSelectedLanguage, addXp }}>
       {children}
     </AppContext.Provider>
   );

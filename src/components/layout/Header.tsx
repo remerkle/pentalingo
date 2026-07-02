@@ -14,9 +14,9 @@ export function Header() {
         <nav className="flex items-center gap-1">
           {[
             { to: '/dashboard', label: 'Dashboard' },
-            { to: '/lessons',   label: 'Lessons' },
             { to: '/flashcards',label: 'Flashcards' },
-            { to: '/quiz',      label: 'Quiz' },
+            { to: '/articles',  label: 'Articles' },
+            { to: '/synonyms',  label: 'Synonyms' },
           ].map(({ to, label }) => (
             <NavLink
               key={to}

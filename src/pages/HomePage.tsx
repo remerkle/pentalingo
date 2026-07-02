@@ -10,7 +10,7 @@ export function HomePage() {
 
   function handleLanguagePick(lang: typeof LANGUAGES[0]) {
     setSelectedLanguage(lang);
-    navigate('/lessons');
+    navigate('/flashcards');
   }
 
   return (
@@ -22,14 +22,14 @@ export function HomePage() {
           <span className="text-[#58CC02]">One app.</span>
         </h1>
         <p className="text-xl text-[#777777] max-w-md">
-          Short lessons, spaced flashcards, and fun quizzes — all designed to keep you coming back.
+          Spaced flashcards, article checks, and synonym lookups — all designed to keep you coming back.
         </p>
         <div className="flex gap-4">
           <Button size="lg" onClick={() => navigate('/dashboard')}>
             Get Started — it's free
           </Button>
-          <Button size="lg" variant="secondary" onClick={() => navigate('/lessons')}>
-            Browse Lessons
+          <Button size="lg" variant="secondary" onClick={() => navigate('/flashcards')}>
+            Browse Flashcards
           </Button>
         </div>
       </section>
@@ -37,7 +37,7 @@ export function HomePage() {
       {/* Language picker */}
       <section className="w-full">
         <h2 className="text-2xl font-black text-[#3C3C3C] mb-6 text-center">Choose your language</h2>
-        <div className="grid grid-cols-5 gap-4">
+        <div className="grid grid-cols-4 gap-4">
           {LANGUAGES.map(lang => (
             <Card
               key={lang.id}
@@ -55,9 +55,9 @@ export function HomePage() {
       {/* Feature highlights */}
       <section className="w-full grid grid-cols-3 gap-6 pb-8">
         {[
-          { emoji: '📖', title: 'Structured Lessons', desc: 'Learn step by step through curated units', color: '#58CC02' },
-          { emoji: '🃏', title: 'Smart Flashcards',   desc: 'Spaced repetition keeps vocabulary fresh',  color: '#1CB0F6' },
-          { emoji: '🎯', title: 'Daily Quizzes',       desc: 'Reinforce what you learned with exercises', color: '#FF9600' },
+          { emoji: '🃏', title: 'Smart Flashcards', desc: 'Spaced repetition keeps vocabulary fresh',    color: '#1CB0F6' },
+          { emoji: '📝', title: 'Article Checker',  desc: 'Look up the correct article for any noun',    color: '#58CC02' },
+          { emoji: '🔤', title: 'Synonyms',         desc: 'Expand your vocabulary with related words',   color: '#CE82FF' },
         ].map(f => (
           <Card key={f.title} accent={f.color} className="flex flex-col gap-3 p-6">
             <span className="text-3xl">{f.emoji}</span>

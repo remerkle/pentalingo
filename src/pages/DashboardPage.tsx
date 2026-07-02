@@ -4,15 +4,11 @@ import { Badge } from '../components/ui/Badge';
 import { ProgressBar } from '../components/ui/ProgressBar';
 import { Button } from '../components/ui/Button';
 import { useApp } from '../context/AppContext';
-import { LANGUAGES, LESSONS } from '../data/languages';
+import { LANGUAGES, FLASHCARDS } from '../data/languages';
 
 export function DashboardPage() {
   const navigate = useNavigate();
   const { progress, selectedLanguage } = useApp();
-
-  const nextLesson = LESSONS.find(
-    l => l.languageId === selectedLanguage.id && !l.completed && !l.locked
-  );
 
   return (
     <div className="flex flex-col gap-6">
@@ -50,30 +46,26 @@ export function DashboardPage() {
       </Card>
 
       {/* Continue learning */}
-      {nextLesson && (
-        <Card className="p-6 flex items-center justify-between gap-4" accent={selectedLanguage.color}>
-          <div className="flex flex-col gap-1">
-            <p className="text-xs font-bold text-[#777777] uppercase tracking-wide">Continue Learning</p>
-            <h2 className="text-xl font-black text-[#3C3C3C]">{nextLesson.title}</h2>
-            <p className="text-sm text-[#777777]">{nextLesson.description}</p>
-          </div>
-          <Button onClick={() => navigate('/lessons')}>Continue →</Button>
-        </Card>
-      )}
+      <Card className="p-6 flex items-center justify-between gap-4" accent={selectedLanguage.color}>
+        <div className="flex flex-col gap-1">
+          <p className="text-xs font-bold text-[#777777] uppercase tracking-wide">Keep practicing</p>
+          <h2 className="text-xl font-black text-[#3C3C3C]">{selectedLanguage.name} Flashcards</h2>
+          <p className="text-sm text-[#777777]">Review vocabulary with spaced repetition</p>
+        </div>
+        <Button onClick={() => navigate('/flashcards')}>Continue →</Button>
+      </Card>
 
       {/* Languages overview */}
       <div>
         <h2 className="text-xl font-black text-[#3C3C3C] mb-4">Your Languages</h2>
-        <div className="grid grid-cols-5 gap-3">
+        <div className="grid grid-cols-4 gap-3">
           {LANGUAGES.map(lang => {
-            const completed = LESSONS.filter(l => l.languageId === lang.id && l.completed).length;
-            const total = LESSONS.filter(l => l.languageId === lang.id).length;
+            const cardCount = FLASHCARDS.filter(f => f.languageId === lang.id).length;
             return (
               <Card key={lang.id} accent={lang.color} className="flex flex-col items-center gap-3 p-4">
                 <span className="text-3xl">{lang.flag}</span>
                 <span className="font-black text-sm text-[#3C3C3C]">{lang.name}</span>
-                <ProgressBar value={completed} max={total} color={lang.color} />
-                <span className="text-xs text-[#777777]">{completed}/{total} lessons</span>
+                <span className="text-xs text-[#777777]">{cardCount} flashcards</span>
               </Card>
             );
           })}

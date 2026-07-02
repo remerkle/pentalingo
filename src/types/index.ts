@@ -5,18 +5,6 @@ export type Language = {
   color: string;
 };
 
-export type Lesson = {
-  id: string;
-  languageId: string;
-  title: string;
-  description: string;
-  unit: number;
-  order: number;
-  completed: boolean;
-  locked: boolean;
-  xpReward: number;
-};
-
 export type Flashcard = {
   id: string;
   languageId: string;
@@ -27,20 +15,27 @@ export type Flashcard = {
   easeFactor: number;
 };
 
-export type QuizQuestion = {
+export type NounArticle = {
   id: string;
   languageId: string;
-  type: 'multiple-choice' | 'fill-blank';
-  prompt: string;
-  options?: string[];
-  answer: string;
+  noun: string;
+  article: string;
+  gender: 'masculine' | 'feminine' | 'neuter' | 'common' | 'indefinite';
+  translation: string;
+};
+
+export type Synonym = {
+  id: string;
+  languageId: string;
+  word: string;
+  synonyms: string[];
+  translation: string;
 };
 
 export type UserProgress = {
   streak: number;
   xp: number;
   level: number;
-  completedLessons: string[];
   dailyGoal: number;
   todayXp: number;
 };
