@@ -2,7 +2,7 @@
 
 ## What is this?
 
-Pentalingo is a language-learning web app (inspired by Duolingo) where users can learn **4 languages** (Dutch, Spanish, English, German) through spaced-repetition flashcards, an article checker, and a synonym lookup — all backed by curated dictionaries with a live Wiktionary fallback for words outside them. Built with React + TypeScript + Vite + Tailwind CSS v4.
+Pentalingo is a language-learning web app (inspired by Duolingo) where users can learn **4 languages** (Dutch, Spanish, English, German) through spaced-repetition flashcards, an article checker (with a de/het-style quiz mode), a synonym lookup, a verb tenses reference, and a prepositions fill-in-the-blank quiz — all backed by curated dictionaries with a live Wiktionary fallback for words outside them. Built with React + TypeScript + Vite + Tailwind CSS v4.
 
 ---
 
@@ -27,23 +27,37 @@ src/
 │   │   ├── Card.tsx         # White card with thick bottom border accent; accepts optional `accent` color
 │   │   ├── ProgressBar.tsx  # Filled bar with configurable color and optional % label
 │   │   └── Badge.tsx        # Pill badge in green/orange/blue/red/purple/yellow
-│   └── layout/
-│       ├── Header.tsx       # Sticky top nav with logo, nav links, streak 🔥 and XP ⚡ display; nav scrolls horizontally with fade cues on mobile
-│       └── Layout.tsx       # Wraps all pages; Header + max-w-4xl centered main content
+│   ├── layout/
+│   │   ├── Header.tsx       # Sticky top nav with logo, nav links, streak 🔥 and XP ⚡ display; nav scrolls horizontally with fade cues on mobile
+│   │   └── Layout.tsx       # Wraps all pages; Header + max-w-4xl centered main content
+│   ├── articles/
+│   │   └── ArticleQuiz.tsx  # Self-contained article quiz (10 questions, score, XP), all 4 languages, used by ArticlesPage
+│   └── prepositions/
+│       └── PrepositionQuiz.tsx # Self-contained fill-in-the-blank quiz (10 questions, score, XP), all 4 languages, used by PrepositionsPage
 ├── pages/
 │   ├── HomePage.tsx         # Landing: hero tagline, language picker grid, 3 feature cards
 │   ├── DashboardPage.tsx    # Stats (streak, XP, level), daily goal progress, continue-to-flashcards CTA, language overview
 │   ├── FlashcardsPage.tsx   # 5 random flippable cards at a time; flipping = reviewed (green + XP); add-a-word via Wiktionary
-│   ├── ArticlesPage.tsx     # Article checker: type a noun → see correct article, gender color-coded
-│   └── SynonymsPage.tsx     # Type a word → see synonyms, sourced from curated dict or Wiktionary
+│   ├── ArticlesPage.tsx     # Article checker: type a noun → see correct article, gender color-coded; "Look up" / article quiz mode toggle for all 4 languages
+│   ├── SynonymsPage.tsx     # Type a word → see synonyms, sourced from curated dict or Wiktionary
+│   ├── VerbTensesPage.tsx   # Browse the 100 most common verbs per language; expandable per-tense cards + an "All Tenses" table
+│   └── PrepositionsPage.tsx # Language tabs + PrepositionQuiz — fill-in-the-blank preposition exercise
 ├── context/
 │   └── AppContext.tsx       # Global state: UserProgress, selectedLanguage; exposes addXp
 ├── data/
 │   ├── languages.ts         # LANGUAGES[], FLASHCARDS[], getFlashcardPool(); re-exports NOUN_ARTICLES, SYNONYMS
 │   ├── nounArticles.ts      # NOUN_ARTICLES[] — Dutch ~1000 nouns, others ~25 each
-│   └── synonyms.ts          # SYNONYMS[] — 25 curated words per language
+│   ├── synonyms.ts          # SYNONYMS[] — 25 curated words per language
+│   ├── prepositions.ts      # PREPOSITION_EXERCISES[] — 20 fill-in-the-blank sentences per language, each with 2 plausible distractors
+│   └── verbs/
+│       ├── dutchVerbs.ts    # DUTCH_VERBS[] — 100 verbs, fully conjugated
+│       ├── spanishVerbs.ts  # SPANISH_VERBS[] — 100 verbs, fully conjugated
+│       ├── englishVerbs.ts  # ENGLISH_VERBS[] — 100 verbs, fully conjugated
+│       ├── germanVerbs.ts   # GERMAN_VERBS[] — 100 verbs, fully conjugated
+│       ├── labels.ts        # PERSON_LABELS (pronouns per language) + TENSE_LABELS (tense name per language) + TENSE_KEYS
+│       └── index.ts         # Re-exports VERBS (all 4 languages combined) + PERSON_LABELS/TENSE_LABELS/TENSE_KEYS
 ├── types/
-│   └── index.ts             # Language, Flashcard, NounArticle, Synonym, UserProgress types
+│   └── index.ts             # Language, Flashcard, NounArticle, Synonym, UserProgress, Verb, ConjugationSet, TenseKey, PrepositionExercise types
 ├── utils/
 │   ├── wiktionary.ts            # fetchWiktionaryWikitext() — shared fetch/timeout/parse-page logic
 │   ├── dutchGender.ts           # lookupDutchArticle() — de/het lookup for Articles
@@ -66,6 +80,8 @@ src/
 | `/flashcards` | FlashcardsPage | 5-card grid pulled randomly from the combined dictionary pool |
 | `/articles` | ArticlesPage | Type a noun to look up its correct article; gender color-coded |
 | `/synonyms` | SynonymsPage | Type a word to look up synonyms |
+| `/verbs` | VerbTensesPage | Browse 100 common verbs per language; expand a tense card or the "All Tenses" table |
+| `/prepositions` | PrepositionsPage | Fill-in-the-blank preposition quiz, 3 options per question |
 
 Lessons and Quiz pages/routes/data existed in the original scaffold and were removed (unused placeholders) — see git history if that flow needs reviving.
 
@@ -208,6 +224,27 @@ const DUTCH_NOUNS = makeEntries('nl', 'nl', [
 - **Browse all**: full grid of all curated nouns for the selected language when input is empty
 - **Language tabs**: synced with global `selectedLanguage` from AppContext; clears input on switch; Wiktionary lookup only runs for Dutch
 
+### Article Quiz mode
+**File:** `src/components/articles/ArticleQuiz.tsx`
+
+A "Look up" / "📝 _articles_ Quiz" mode toggle appears on the Articles page for all 4 languages. The quiz question always asks "Which article?" and offers the buttons appropriate to the selected language, defined in the exported `QUIZ_ARTICLES` map:
+
+| Language | Article choices |
+|----------|-----------------|
+| Dutch (`nl`) | de / het |
+| Spanish (`es`) | el / la |
+| English (`en`) | a / an |
+| German (`de`) | der / die / das |
+
+- Draws 10 random nouns (`QUIZ_SIZE`) from the selected language's slice of `NOUN_ARTICLES` via Fisher-Yates shuffle, one question at a time (not a grid like Flashcards); re-draws automatically whenever the selected language changes
+- The correct answer is checked against each entry's `article` field (not `gender`) — this matters for exceptions like Spanish "agua" (`el`, feminine)
+- Answer buttons render in a 2- or 3-column grid depending on how many choices the language has (German's 3 vs. everyone else's 2)
+- Learner picks an article; the choice locks in immediately (buttons disable), correct answer highlights green, a wrong pick highlights red while the correct one still turns green, and the noun's translation is revealed
+- Correct answers award **+5 XP** (`XP_PER_CORRECT`) via `addXp`, matching the Flashcards reward per card
+- A `ProgressBar` tracks question 1–10; an explicit "Next question" / "See results" button advances (no auto-timer)
+- End screen shows score out of 10, a percentage badge (color scales with performance), and "Play again" to redraw a fresh random 10
+- Reads `selectedLanguage` and `addXp` from `AppContext` directly (no props), so it stays in sync with the language tabs on the page
+
 ---
 
 ## Synonyms (`/synonyms`)
@@ -247,6 +284,89 @@ This gives Dutch **1000+** flashcards and the other languages **~50** each, vers
 - Each card flips independently on click; flipping a card for the first time immediately marks it reviewed (turns green, "Reviewed" badge, +5 XP) — there's no separate Easy/Good/Hard rating step
 - Once all cards in the session are reviewed, a "New words" button draws a fresh random 5
 - **Add a word**: a search box below the grid lets you type any word in the selected language; if it's not already in the session, a 400ms-debounced Wiktionary lookup (`lookupWiktionaryTranslation()`) fires and shows a preview card with an "Add" button that appends it to the current session (session-only, not persisted to the dictionary files)
+
+---
+
+## Verb Tenses (`/verbs`)
+
+**File:** `src/pages/VerbTensesPage.tsx`
+**Data:** `src/data/verbs/` → `VERBS: Verb[]` (100 per language × 4 languages = 400 total), plus `PERSON_LABELS` and `TENSE_LABELS` lookup tables, all re-exported from `src/data/verbs/index.ts`
+
+### Verb type (`src/types/index.ts`)
+```ts
+export type TenseKey = 'present' | 'past' | 'future' | 'presentPerfect';
+export type ConjugationSet = [string, string, string, string, string, string]; // fixed person order
+
+export type Verb = {
+  id: string;
+  languageId: string;
+  infinitive: string;
+  translation: string;
+  present: ConjugationSet;
+  past: ConjugationSet;
+  future: ConjugationSet;
+  presentPerfect: ConjugationSet;
+};
+```
+
+### Person order (shared across all 4 languages so tables line up)
+`[1st sg, 2nd sg, 3rd sg, 1st pl, 2nd pl, 3rd pl]` — e.g. English: I / you / he-she-it / we / you-all / they. Actual pronoun labels per language live in `PERSON_LABELS` (`src/data/verbs/labels.ts`): Dutch `ik/jij/hij-zij-het/wij/jullie/zij`, Spanish `yo/tú/él-ella-usted/nosotros/vosotros/ellos-ellas`, German `ich/du/er-sie-es/wir/ihr/sie-Sie`.
+
+### Tenses covered
+Present, Past (simple past/preterite, not a continuous form), Future, and Present Perfect — the same 4-tense set across all languages, with language-specific grammar names in `TENSE_LABELS` (e.g. Dutch "Tegenwoordige tijd"/"Verleden tijd"/"Toekomende tijd"/"Voltooid tegenwoordige tijd"; German "Präsens"/"Präteritum"/"Futur I"/"Perfekt"; Spanish "Presente"/"Pretérito"/"Futuro"/"Pretérito perfecto"). Compound tenses (future, present perfect) use the grammatically correct auxiliary per verb — including the hebben/zijn (Dutch) and haben/sein (German) split for verbs of motion/change of state.
+
+### UI behavior
+- One verb "presented at a time": a navigator card shows the infinitive + translation with **Prev/Next** buttons and a "Verb N of 100" counter; switching languages resets to verb 1
+- Below it, a vertical stack of tense cards (Present, Past, Future, Present Perfect) plus a 5th **"📋 All Tenses"** card
+- Clicking a tense card expands a conjugation card directly beneath it, listing all 6 persons for that tense; multiple tense cards can be expanded at once (not an exclusive accordion)
+- Clicking "All Tenses" expands a table below it instead — rows are the 4 tenses, columns are the 6 persons, so the whole conjugation is visible at a glance; the table's card wrapper scrolls horizontally on narrow viewports (German's 6-person columns are the widest case)
+- Expansion state resets whenever the verb or language changes
+- A collapsed **"Browse all 100 verbs"** grid at the bottom lets you jump directly to any verb (highights the currently-selected one) instead of paging through with Prev/Next
+- No XP awarded — this is a reference/study tool like Articles' lookup mode, not a scored exercise
+
+### Content provenance & known caveats
+The 400 verb entries (100 × 4 languages) were authored by dedicated research passes per language, cross-checking irregular high-frequency verbs (modals, "to be"/"to have"-type verbs, strong/irregular preterites) by hand. A few noted edge cases if inaccuracies surface during use:
+- Dutch `zullen` ("shall/will") doesn't have a natural future or present-perfect in real usage; those two tenses were constructed grammatically for schema consistency rather than reflecting attested usage.
+- Dutch aux choice (hebben vs. zijn) for a handful of verbs with regional/contextual variation (lopen, rijden, vliegen, zwemmen, beginnen, eindigen, vergeten, veranderen) reflects the more common reading — native usage sometimes splits by transitive vs. directional sense.
+- German aux choice for stehen/liegen/sitzen uses standard High German (`haben`); Southern German/Austrian usage prefers `sein`.
+- Spanish `levantarse`/`casarse` are reflexive, so their conjugated forms include the clitic pronoun (`me levanto`, `se casó`) rather than a bare stem.
+- English `get`'s present perfect uses the American "gotten" rather than British "got"; `learn`/`learned` likewise uses the American form over "learnt".
+
+---
+
+## Prepositions (`/prepositions`)
+
+**File:** `src/pages/PrepositionsPage.tsx` + `src/components/prepositions/PrepositionQuiz.tsx`
+**Data:** `src/data/prepositions.ts` → `PREPOSITION_EXERCISES: PrepositionExercise[]` (20 per language × 4 languages = 80 total)
+
+### PrepositionExercise type (`src/types/index.ts`)
+```ts
+export type PrepositionExercise = {
+  id: string;
+  languageId: string;
+  sentence: string; // contains "___" marking the blank
+  correct: string;
+  distractors: [string, string];
+  translation: string;
+};
+```
+
+### Distractor design
+Each exercise's 2 wrong options aren't random prepositions — they're specifically the ones a non-native speaker is likely to mistakenly pick, generally because:
+- **Literal translation from the learner's other languages fails** — e.g. Dutch "in het weekend" (not "op"), because English says "on the weekend"; German "Angst vor" (not "von"/"an"), because English says "afraid of"
+- **Fixed verb/adjective + preposition pairings** that don't map 1:1 across languages — e.g. Spanish "pensar en" vs. "pensar a", German "sich freuen auf" (upcoming) vs. "sich freuen über" (already happened) vs. "an"
+- **Near-synonym prepositions with a real grammatical distinction** — e.g. English "between" (exactly two) vs. "among"/"amongst" (three+); Spanish "por" vs. "para" (reason/means vs. purpose/destination); German locational in/an/auf (enclosed space vs. vertical surface vs. horizontal surface)
+
+The `translation` field doubles as the answer explanation — for non-English languages it's an English translation of the sentence plus a short rule; for English exercises (already in English) it's just the usage rule.
+
+### UI behavior (mirrors `ArticleQuiz`'s architecture)
+- Draws 10 random exercises (`QUIZ_SIZE`) per session via Fisher-Yates shuffle from the selected language's pool; re-draws when the language tab changes
+- The 3 options (correct + 2 distractors) are re-shuffled per question so the correct answer isn't always in the same position
+- The blank renders inline in the sentence (underscored placeholder before answering, filled with the learner's pick and colored green/red after)
+- Selecting locks in the choice, highlights correct green / wrong red (with the correct one still highlighted), and reveals the translation/rule
+- Correct answers award **+5 XP** (`XP_PER_CORRECT`), matching Flashcards and the Articles de/het quiz
+- End screen shows score out of 10, a percentage badge, and "Play again" to redraw a fresh random 10
+- No separate "look up" mode — this page is quiz-only, unlike Articles which offers both a lookup and a quiz mode
 
 ---
 

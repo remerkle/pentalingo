@@ -39,3 +39,28 @@ export type UserProgress = {
   dailyGoal: number;
   todayXp: number;
 };
+
+export type TenseKey = 'present' | 'past' | 'future' | 'presentPerfect';
+
+// Conjugated forms in fixed person order: [I, you, he/she/it, we, you-all, they]
+export type ConjugationSet = [string, string, string, string, string, string];
+
+export type Verb = {
+  id: string;
+  languageId: string;
+  infinitive: string;
+  translation: string;
+  present: ConjugationSet;
+  past: ConjugationSet;
+  future: ConjugationSet;
+  presentPerfect: ConjugationSet;
+};
+
+export type PrepositionExercise = {
+  id: string;
+  languageId: string;
+  sentence: string; // contains "___" marking the blank
+  correct: string;
+  distractors: [string, string];
+  translation: string;
+};

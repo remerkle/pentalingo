@@ -3,6 +3,7 @@ import { useApp } from '../context/AppContext';
 import { LANGUAGES } from '../data/languages';
 import { NOUN_ARTICLES } from '../data/nounArticles';
 import { lookupDutchArticle } from '../utils/dutchGender';
+import { ArticleQuiz, QUIZ_ARTICLES } from '../components/articles/ArticleQuiz';
 
 const GENDER_COLORS: Record<string, { bg: string; text: string; label: string }> = {
   masculine:  { bg: '#EFF8FF', text: '#1CB0F6', label: 'masculine' },
@@ -18,10 +19,13 @@ type LookupState =
   | { status: 'found'; article: 'de' | 'het' }
   | { status: 'not-found' };
 
+type Mode = 'lookup' | 'quiz';
+
 export function ArticlesPage() {
   const { selectedLanguage, setSelectedLanguage } = useApp();
   const [query, setQuery] = useState('');
   const [lookupState, setLookupState] = useState<LookupState>({ status: 'idle' });
+  const [mode, setMode] = useState<Mode>('lookup');
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const langNouns = NOUN_ARTICLES.filter(n => n.languageId === selectedLanguage.id);
@@ -97,6 +101,27 @@ export function ArticlesPage() {
         ))}
       </div>
 
+      {/* Mode toggle */}
+      <div className="flex gap-2 justify-center">
+        {(['lookup', 'quiz'] as const).map(m => (
+          <button
+            key={m}
+            onClick={() => { setMode(m); setQuery(''); }}
+            className={`px-5 py-2 rounded-xl font-bold text-sm border-2 border-b-4 transition-all active:border-b-0 active:translate-y-[2px] ${
+              mode === m
+                ? 'bg-[#1CB0F6] border-[#1CB0F6] text-white'
+                : 'bg-white border-[#E5E5E5] text-[#777777] hover:bg-[#F7F7F7]'
+            }`}
+          >
+            {m === 'lookup' ? 'Look up' : `📝 ${QUIZ_ARTICLES[selectedLanguage.id]?.join('/')} Quiz`}
+          </button>
+        ))}
+      </div>
+
+      {mode === 'quiz' ? (
+        <ArticleQuiz />
+      ) : (
+      <>
       {/* Input */}
       <div className="max-w-md mx-auto">
         <input
@@ -228,6 +253,8 @@ export function ArticlesPage() {
             })}
           </div>
         </div>
+      )}
+      </>
       )}
     </div>
   );

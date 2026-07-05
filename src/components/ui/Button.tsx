@@ -32,7 +32,7 @@ export function Button({
   return (
     <button
       className={[
-        'font-bold rounded-2xl transition-all duration-100 cursor-pointer',
+        'font-bold rounded-2xl transition-all duration-100 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:brightness-100',
         variants[variant],
         sizes[size],
         fullWidth ? 'w-full' : '',

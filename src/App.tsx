@@ -6,6 +6,8 @@ import { DashboardPage } from './pages/DashboardPage';
 import { FlashcardsPage } from './pages/FlashcardsPage';
 import { ArticlesPage } from './pages/ArticlesPage';
 import { SynonymsPage } from './pages/SynonymsPage';
+import { VerbTensesPage } from './pages/VerbTensesPage';
+import { PrepositionsPage } from './pages/PrepositionsPage';
 
 export default function App() {
   return (
@@ -18,6 +20,8 @@ export default function App() {
             <Route path="/flashcards" element={<FlashcardsPage />} />
             <Route path="/articles"   element={<ArticlesPage />} />
             <Route path="/synonyms"   element={<SynonymsPage />} />
+            <Route path="/verbs"      element={<VerbTensesPage />} />
+            <Route path="/prepositions" element={<PrepositionsPage />} />
           </Routes>
         </Layout>
       </AppProvider>

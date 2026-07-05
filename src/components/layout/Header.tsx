@@ -39,6 +39,8 @@ export function Header() {
               { to: '/flashcards',label: 'Flashcards' },
               { to: '/articles',  label: 'Articles' },
               { to: '/synonyms',  label: 'Synonyms' },
+              { to: '/verbs',     label: 'Verbs' },
+              { to: '/prepositions', label: 'Prepositions' },
             ].map(({ to, label }) => (
               <NavLink
                 key={to}
