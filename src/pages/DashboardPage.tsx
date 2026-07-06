@@ -2,12 +2,17 @@ import { useNavigate } from 'react-router-dom';
 import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { ProgressBar } from '../components/ui/ProgressBar';
-import { Button } from '../components/ui/Button';
 import { useApp } from '../context/AppContext';
+import { LANGUAGES } from '../data/languages';
 
 export function DashboardPage() {
   const navigate = useNavigate();
-  const { progress, selectedLanguage } = useApp();
+  const { progress, setSelectedLanguage } = useApp();
+
+  function handleLanguagePick(lang: typeof LANGUAGES[0]) {
+    setSelectedLanguage(lang);
+    navigate('/learn');
+  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -45,14 +50,22 @@ export function DashboardPage() {
       </Card>
 
       {/* Continue learning */}
-      <Card className="p-6 flex items-center justify-between gap-4" accent={selectedLanguage.color}>
-        <div className="flex flex-col gap-1">
-          <p className="text-xs font-semibold text-[#6B6860] uppercase tracking-wide">Keep practicing</p>
-          <h2 className="font-serif text-xl font-semibold text-[#1B1A17]">{selectedLanguage.name} Flashcards</h2>
-          <p className="text-sm text-[#6B6860]">Review vocabulary with spaced repetition</p>
+      <div>
+        <h2 className="font-serif text-lg font-semibold text-[#1B1A17] mb-3">Continue Learning</h2>
+        <div className="grid grid-cols-4 gap-3">
+          {LANGUAGES.map(lang => (
+            <Card
+              key={lang.id}
+              onClick={() => handleLanguagePick(lang)}
+              accent={lang.color}
+              className="flex flex-col items-center gap-2 p-4 text-center"
+            >
+              <span className="text-3xl">{lang.flag}</span>
+              <span className="font-semibold text-sm text-[#1B1A17]">{lang.name}</span>
+            </Card>
+          ))}
         </div>
-        <Button onClick={() => navigate('/flashcards')}>Continue →</Button>
-      </Card>
+      </div>
     </div>
   );
 }
