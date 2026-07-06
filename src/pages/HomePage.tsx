@@ -10,7 +10,7 @@ export function HomePage() {
 
   function handleLanguagePick(lang: typeof LANGUAGES[0]) {
     setSelectedLanguage(lang);
-    navigate('/flashcards');
+    navigate('/learn');
   }
 
   return (
@@ -53,7 +53,7 @@ export function HomePage() {
       </section>
 
       {/* Feature highlights */}
-      <section className="w-full grid grid-cols-3 gap-6 pb-8">
+      <section className="w-full grid grid-cols-1 sm:grid-cols-3 gap-6 pb-8">
         {[
           { emoji: '🃏', title: 'Smart Flashcards', desc: 'Spaced repetition keeps vocabulary fresh',    color: '#E4EAF0' },
           { emoji: '📝', title: 'Article Checker',  desc: 'Look up the correct article for any noun',    color: '#E5EBDF' },
