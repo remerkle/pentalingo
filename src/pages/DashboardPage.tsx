@@ -31,9 +31,9 @@ export function DashboardPage() {
           <span className="text-sm font-semibold text-[#6B6860]">Total XP</span>
         </Card>
         <Card className="flex flex-col items-center gap-2 p-6">
-          <span className="text-4xl">🏆</span>
-          <span className="font-serif text-4xl font-semibold text-[#9B8AA8]">Lv {progress.level}</span>
-          <span className="text-sm font-semibold text-[#6B6860]">Level</span>
+          <span className="text-4xl">🎯</span>
+          <span className="font-serif text-4xl font-semibold text-[#5F7256]">{progress.todayXp}</span>
+          <span className="text-sm font-semibold text-[#6B6860]">Daily XP</span>
         </Card>
       </div>
 
