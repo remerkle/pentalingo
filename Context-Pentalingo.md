@@ -23,10 +23,10 @@ Pentalingo is a language-learning web app (inspired by Duolingo) where users can
 src/
 ├── components/
 │   ├── ui/                  # Reusable primitives
-│   │   ├── Button.tsx       # Primary/secondary/danger/ghost variants with Duolingo-style border-b-4 shadow
-│   │   ├── Card.tsx         # White card with thick bottom border accent; accepts optional `accent` color
+│   │   ├── Button.tsx       # Primary (solid ink)/secondary (outlined)/danger/ghost pill variants, rounded-full
+│   │   ├── Card.tsx         # Flat bordered card; `accent` renders as a left stripe; `tinted` renders a solid accent-colored block (no border)
 │   │   ├── ProgressBar.tsx  # Filled bar with configurable color and optional % label
-│   │   └── Badge.tsx        # Pill badge in green/orange/blue/red/purple/yellow
+│   │   └── Badge.tsx        # Pill badge in green/orange/blue/red/purple/yellow (muted palette)
 │   ├── layout/
 │   │   ├── Header.tsx       # Sticky top nav with logo, nav links, streak 🔥 and XP ⚡ display; nav scrolls horizontally with fade cues on mobile
 │   │   └── Layout.tsx       # Wraps all pages; Header + max-w-4xl centered main content
@@ -48,7 +48,10 @@ src/
 │   ├── languages.ts         # LANGUAGES[], FLASHCARDS[], getFlashcardPool(); re-exports NOUN_ARTICLES, SYNONYMS
 │   ├── nounArticles.ts      # NOUN_ARTICLES[] — Dutch ~1000 nouns, others ~25 each
 │   ├── synonyms.ts          # SYNONYMS[] — 25 curated words per language
-│   ├── prepositions.ts      # PREPOSITION_EXERCISES[] — 20 fill-in-the-blank sentences per language, each with 2 plausible distractors
+│   ├── prepositions/        # PREPOSITION_EXERCISES[] — 120 fill-in-the-blank sentences per language (480 total), each with 2 plausible distractors
+│   │   ├── dutchPrepositions.ts / spanishPrepositions.ts / englishPrepositions.ts / germanPrepositions.ts
+│   │   ├── shared.ts        # Entry tuple type + makeEntries() helper shared by all 4 language files
+│   │   └── index.ts         # Re-exports combined PREPOSITION_EXERCISES
 │   └── verbs/
 │       ├── dutchVerbs.ts    # DUTCH_VERBS[] — 100 verbs, fully conjugated
 │       ├── spanishVerbs.ts  # SPANISH_VERBS[] — 100 verbs, fully conjugated
@@ -89,34 +92,39 @@ Lessons and Quiz pages/routes/data existed in the original scaffold and were rem
 
 ## Design System
 
-### Font
-**Nunito** (Google Fonts) — rounded, friendly, high legibility. Weights used: 400, 600, 700, 800, 900.
+Redesigned to an Anthropic.com-inspired editorial look (warm neutrals, serif headlines, muted pastel accents), replacing the original bright "Duolingo" visual language. All gamification (streak 🔥, XP ⚡, quiz scoring, flip-card flashcards) is unchanged — this was a pure visual/styling pass.
 
-### Color Palette (Duolingo-inspired)
+### Fonts
+- **Source Serif 4** (Google Fonts, weights 400/600/700) — headlines and display numbers, applied via the `font-serif` utility (Tailwind v4 auto-generates it from the `--font-family-serif` theme token). Used at `font-semibold`, not `font-black` — editorial, not shouty.
+- **Inter** (Google Fonts, weights 400/500/600/700/800) — body copy, nav, buttons, badges, labels; this is the default `font-sans`/body font.
 
-| Name | Hex | Used for |
-|------|-----|---------|
-| Green | `#58CC02` | Primary CTA, correct answers, XP |
-| Green dark | `#46A302` | Button border shadow, completed state |
-| Green light | `#D7F5B1` | Correct answer backgrounds, badges |
-| Orange | `#FF9600` | Streak, secondary accents |
-| Blue | `#1CB0F6` | Secondary buttons, Dutch language |
-| Red | `#FF4B4B` | Wrong answers, danger buttons |
-| Purple | `#CE82FF` | Flashcards, Synonyms, Mandarin language |
-| Yellow | `#FFD900` | XP display, level badge |
-| Surface | `#F7F7F7` | Hover states, card backgrounds |
-| Border | `#E5E5E5` | Card borders, dividers |
-| Text | `#3C3C3C` | Primary text |
-| Muted | `#777777` | Secondary text, labels |
+### Color Palette
 
-Design tokens are defined in `src/index.css` under `@theme { }` and usable as Tailwind utilities (e.g. `bg-green`, `text-muted`). Direct hex values are also used inline where semantics are one-off.
+| Token | Hex | Used for |
+|---|---|---|
+| `--color-cream` | `#F7F4EE` | page/header background |
+| `--color-surface` | `#FFFFFF` | card background |
+| `--color-surface-tint` | `#F1EDE4` | hover states |
+| `--color-border` | `#E3DFD4` | card/divider borders |
+| `--color-ink` | `#1B1A17` | primary text/headings |
+| `--color-muted` | `#6B6860` | secondary text/labels |
+| `--color-accent` / `-dark` / `-light` | `#D97757` / `#B85C3E` / `#F3E2D9` | primary CTA, XP display |
+| `--color-success` / `-dark` / `-light` | `#7A8F6E` / `#5F7256` / `#E3E8DC` | correct answers |
+| `--color-error` / `-dark` / `-light` | `#B85C4F` / `#954A40` / `#F1DEDA` | wrong answers |
+| `--color-nl` / `-light` | `#7C93B0` / `#E4EAF0` | Dutch accent (dusty blue) |
+| `--color-es` / `-light` | `#D3A15C` / `#F3E7D3` | Spanish accent (ochre) |
+| `--color-en` / `-light` | `#8FA37E` / `#E5EBDF` | English accent (sage) |
+| `--color-de` / `-light` | `#BC7F6D` / `#F0E0DA` | German accent (muted clay) |
+| `--color-feature` / `-light` | `#9B8AA8` / `#EAE3EC` | cross-cutting accent — Flashcards, Dutch neuter/`het`, "All Tenses" |
+
+Each language keeps its original hue family (nl=blue, es=orange, en=green, de=red), just desaturated/warmed — defined once in `LANGUAGES` (`src/data/languages.ts`) and cascaded everywhere via the `color` field. Tokens live in `src/index.css` under `@theme { }` and are usable as Tailwind utilities (e.g. `bg-accent`); most components reference the raw hex directly via arbitrary-value classes (`text-[#1B1A17]`) rather than the token name, matching the pre-existing codebase convention.
 
 ### Visual Style
-- **Cards**: white background, `border-2 border-[#E5E5E5] border-b-4`, `rounded-2xl` — the thick bottom border gives a 3D "lifted" feel
-- **Buttons**: same thick-bottom-border pattern; pressing removes it (`active:border-b-0 active:translate-y-[2px]`) for a satisfying click
-- **Rounded corners**: `rounded-2xl` (16px) everywhere for a friendly, approachable look
-- **Bold text**: headings use `font-black` (900) for punchy hierarchy
-- **Language accent colors**: each language has its own color used on card bottom borders and tab highlights
+- **Cards**: flat `bg-white border border-[#E3DFD4]`, `rounded-2xl` — no 3D lift effect. The `accent` prop renders as a `border-l-4` stripe; a `tinted` card renders as a solid accent-colored block with no border, used for hero/feature tiles (e.g. HomePage's 3 feature cards) rather than list items
+- **Buttons**: `rounded-full` pills, no border-b-4 press effect — `primary` = solid ink, `secondary` = ink-outlined, `danger` = solid error-color
+- **Language/mode tabs**: `rounded-full` pill buttons across all pages (Articles, Synonyms, Verbs, Prepositions), replacing the old rectangular `rounded-xl` tabs
+- **Headings**: `font-serif font-semibold tracking-tight` in place of `font-black` Nunito
+- **No hand-drawn illustration accents** — visual identity comes from type/color/shape alone (a deliberate scope decision, not an oversight)
 
 ### Mobile Responsiveness
 - **Header** (`src/components/layout/Header.tsx`): logo and streak/XP are `shrink-0` (pinned); the nav link row is the only flexible piece, wrapped in a `relative min-w-0` container so it can shrink and scroll independently instead of forcing the whole page wider than the viewport
@@ -132,10 +140,10 @@ Defined in `src/data/languages.ts`.
 
 | ID | Name | Flag | Color |
 |----|------|------|-------|
-| `nl` | Dutch   | 🇳🇱 | Blue `#1CB0F6` |
-| `es` | Spanish | 🇪🇸 | Orange `#FF9600` |
-| `en` | English | 🇬🇧 | Green `#58CC02` |
-| `de` | German  | 🇩🇪 | Red `#FF4B4B` |
+| `nl` | Dutch   | 🇳🇱 | Dusty blue `#7C93B0` |
+| `es` | Spanish | 🇪🇸 | Ochre `#D3A15C` |
+| `en` | English | 🇬🇧 | Sage `#8FA37E` |
+| `de` | German  | 🇩🇪 | Muted clay `#BC7F6D` |
 
 ---
 
@@ -209,11 +217,11 @@ const DUTCH_NOUNS = makeEntries('nl', 'nl', [
 ### Gender color-coding
 | Gender | Color | Used for |
 |--------|-------|---------|
-| `common` | Blue `#1CB0F6` | Dutch `de` words |
-| `neuter` | Purple `#CE82FF` | Dutch `het` words |
-| `masculine` | Blue `#1CB0F6` | Spanish/German masculine |
-| `feminine` | Red `#FF4B4B` | Spanish/German feminine |
-| `indefinite` | Green `#46A302` | English `a`/`an` |
+| `common` | Dusty blue `#7C93B0` | Dutch `de` words |
+| `neuter` | Muted mauve `#9B8AA8` (`--color-feature`) | Dutch `het` words |
+| `masculine` | Dusty blue `#7C93B0` | Spanish/German masculine |
+| `feminine` | Muted clay `#BC7F6D` | Spanish/German feminine |
+| `indefinite` | Success green `#5F7256` | English `a`/`an` |
 
 ### UI behavior
 - **Curated match** (word in `NOUN_ARTICLES`): shows article + translation + gender badge instantly, no API call
@@ -239,7 +247,7 @@ A "Look up" / "📝 _articles_ Quiz" mode toggle appears on the Articles page fo
 - Draws 10 random nouns (`QUIZ_SIZE`) from the selected language's slice of `NOUN_ARTICLES` via Fisher-Yates shuffle, one question at a time (not a grid like Flashcards); re-draws automatically whenever the selected language changes
 - The correct answer is checked against each entry's `article` field (not `gender`) — this matters for exceptions like Spanish "agua" (`el`, feminine)
 - Answer buttons render in a 2- or 3-column grid depending on how many choices the language has (German's 3 vs. everyone else's 2)
-- Learner picks an article; the choice locks in immediately (buttons disable), correct answer highlights green, a wrong pick highlights red while the correct one still turns green, and the noun's translation is revealed
+- Learner picks an article; the choice locks in immediately (buttons disable), correct answer highlights in the success color, a wrong pick highlights in the error color while the correct one still shows success, and the noun's translation is revealed
 - Correct answers award **+5 XP** (`XP_PER_CORRECT`) via `addXp`, matching the Flashcards reward per card
 - A `ProgressBar` tracks question 1–10; an explicit "Next question" / "See results" button advances (no auto-timer)
 - End screen shows score out of 10, a percentage badge (color scales with performance), and "Play again" to redraw a fresh random 10
@@ -337,7 +345,7 @@ The 400 verb entries (100 × 4 languages) were authored by dedicated research pa
 ## Prepositions (`/prepositions`)
 
 **File:** `src/pages/PrepositionsPage.tsx` + `src/components/prepositions/PrepositionQuiz.tsx`
-**Data:** `src/data/prepositions.ts` → `PREPOSITION_EXERCISES: PrepositionExercise[]` (20 per language × 4 languages = 80 total)
+**Data:** `src/data/prepositions/` → `PREPOSITION_EXERCISES: PrepositionExercise[]` (120 per language × 4 languages = 480 total), split into one file per language (`dutchPrepositions.ts`, etc.) sharing a `makeEntries()` helper + `Entry` tuple type from `shared.ts`, combined in `index.ts`
 
 ### PrepositionExercise type (`src/types/index.ts`)
 ```ts
@@ -362,11 +370,14 @@ The `translation` field doubles as the answer explanation — for non-English la
 ### UI behavior (mirrors `ArticleQuiz`'s architecture)
 - Draws 10 random exercises (`QUIZ_SIZE`) per session via Fisher-Yates shuffle from the selected language's pool; re-draws when the language tab changes
 - The 3 options (correct + 2 distractors) are re-shuffled per question so the correct answer isn't always in the same position
-- The blank renders inline in the sentence (underscored placeholder before answering, filled with the learner's pick and colored green/red after)
-- Selecting locks in the choice, highlights correct green / wrong red (with the correct one still highlighted), and reveals the translation/rule
+- The blank renders inline in the sentence (underscored placeholder before answering, filled with the learner's pick and colored success/error after)
+- Selecting locks in the choice, highlights correct/wrong in the success/error colors (with the correct one still highlighted), and reveals the translation/rule
 - Correct answers award **+5 XP** (`XP_PER_CORRECT`), matching Flashcards and the Articles de/het quiz
 - End screen shows score out of 10, a percentage badge, and "Play again" to redraw a fresh random 10
 - No separate "look up" mode — this page is quiz-only, unlike Articles which offers both a lookup and a quiz mode
+
+### Content scale
+Each language started with 20 hand-written exercises, then a dedicated research pass per language added 100 more (120 total per language), explicitly covering different ground from the first 20 — additional fixed reflexive-verb/preposition idioms, extended time/location prepositions, and everyday-life scenarios — verified for zero duplicate sentences and exactly one unambiguous correct answer per entry.
 
 ---
 

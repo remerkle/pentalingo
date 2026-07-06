@@ -10,10 +10,10 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variants: Record<Variant, string> = {
-  primary:   'bg-[#58CC02] text-white border-b-4 border-[#46A302] hover:brightness-110 active:border-b-0 active:translate-y-[2px]',
-  secondary: 'bg-white text-[#1CB0F6] border-2 border-[#1CB0F6] hover:bg-[#e8f7ff]',
-  danger:    'bg-[#FF4B4B] text-white border-b-4 border-[#CC3B3B] hover:brightness-110 active:border-b-0 active:translate-y-[2px]',
-  ghost:     'bg-transparent text-[#777777] hover:bg-[#F7F7F7]',
+  primary:   'bg-[#1B1A17] text-[#F7F4EE] border border-[#1B1A17] hover:bg-[#33312C]',
+  secondary: 'bg-transparent text-[#1B1A17] border border-[#1B1A17] hover:bg-[#F1EDE4]',
+  danger:    'bg-[#B85C4F] text-[#F7F4EE] border border-[#B85C4F] hover:bg-[#954A40]',
+  ghost:     'bg-transparent text-[#6B6860] border border-transparent hover:bg-[#F1EDE4]',
 };
 
 const sizes: Record<Size, string> = {
@@ -32,7 +32,7 @@ export function Button({
   return (
     <button
       className={[
-        'font-bold rounded-2xl transition-all duration-100 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:brightness-100',
+        'font-semibold rounded-full transition-colors duration-150 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed',
         variants[variant],
         sizes[size],
         fullWidth ? 'w-full' : '',

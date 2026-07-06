@@ -1,34 +1,43 @@
 @import "tailwindcss";
 
 @theme {
-  --font-family-sans: 'Nunito', sans-serif;
-
-  /* Brand palette */
-  --color-green:       #58CC02;
-  --color-green-dark:  #46A302;
-  --color-green-light: #D7F5B1;
-  --color-orange:      #FF9600;
-  --color-orange-dark: #CC7A00;
-  --color-orange-light:#FFE8C0;
-  --color-blue:        #1CB0F6;
-  --color-blue-dark:   #1599D0;
-  --color-blue-light:  #C8EDFF;
-  --color-red:         #FF4B4B;
-  --color-red-dark:    #CC3B3B;
-  --color-red-light:   #FFD4D4;
-  --color-purple:      #CE82FF;
-  --color-purple-dark: #9B59B6;
-  --color-purple-light:#F0D9FF;
-  --color-yellow:      #FFD900;
-  --color-yellow-dark: #CC9A00;
-  --color-yellow-light:#FFF8C0;
+  --font-family-sans:   'Inter', sans-serif;
+  --font-family-serif:  'Source Serif 4', serif;
 
   /* Neutrals */
-  --color-surface:     #F7F7F7;
-  --color-card:        #FFFFFF;
-  --color-border:      #E5E5E5;
-  --color-text:        #3C3C3C;
-  --color-muted:       #777777;
+  --color-cream:        #F7F4EE;
+  --color-surface:      #FFFFFF;
+  --color-surface-tint: #F1EDE4;
+  --color-border:       #E3DFD4;
+  --color-ink:          #1B1A17;
+  --color-muted:        #6B6860;
+
+  /* Brand accent */
+  --color-accent:       #D97757;
+  --color-accent-dark:  #B85C3E;
+  --color-accent-light: #F3E2D9;
+
+  /* Feedback */
+  --color-success:       #7A8F6E;
+  --color-success-dark:  #5F7256;
+  --color-success-light: #E3E8DC;
+  --color-error:         #B85C4F;
+  --color-error-dark:    #954A40;
+  --color-error-light:   #F1DEDA;
+
+  /* Language accents (muted, same hue family as before) */
+  --color-nl:       #7C93B0;
+  --color-nl-light: #E4EAF0;
+  --color-es:       #D3A15C;
+  --color-es-light: #F3E7D3;
+  --color-en:       #8FA37E;
+  --color-en-light: #E5EBDF;
+  --color-de:       #BC7F6D;
+  --color-de-light: #F0E0DA;
+
+  /* Cross-cutting feature accent (Flashcards, Dutch neuter/het, "All Tenses") */
+  --color-feature:       #9B8AA8;
+  --color-feature-light: #EAE3EC;
 }
 
 *, *::before, *::after {
@@ -38,8 +47,8 @@
 html, body {
   margin: 0;
   overflow-x: hidden;
-  font-family: 'Nunito', sans-serif;
-  background-color: #FFFFFF;
-  color: #3C3C3C;
+  font-family: 'Inter', sans-serif;
+  background-color: #F7F4EE;
+  color: #1B1A17;
   -webkit-font-smoothing: antialiased;
 }

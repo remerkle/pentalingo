@@ -6,10 +6,10 @@ export { NOUN_ARTICLES } from './nounArticles';
 export { SYNONYMS } from './synonyms';
 
 export const LANGUAGES: Language[] = [
-  { id: 'nl', name: 'Dutch',   flag: '🇳🇱', color: '#1CB0F6' },
-  { id: 'es', name: 'Spanish', flag: '🇪🇸', color: '#FF9600' },
-  { id: 'en', name: 'English', flag: '🇬🇧', color: '#58CC02' },
-  { id: 'de', name: 'German',  flag: '🇩🇪', color: '#FF4B4B' },
+  { id: 'nl', name: 'Dutch',   flag: '🇳🇱', color: '#7C93B0' },
+  { id: 'es', name: 'Spanish', flag: '🇪🇸', color: '#D3A15C' },
+  { id: 'en', name: 'English', flag: '🇬🇧', color: '#8FA37E' },
+  { id: 'de', name: 'German',  flag: '🇩🇪', color: '#BC7F6D' },
 ];
 
 export const FLASHCARDS: Flashcard[] = [

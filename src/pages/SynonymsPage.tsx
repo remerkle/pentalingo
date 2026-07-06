@@ -48,8 +48,8 @@ export function SynonymsPage() {
   return (
     <div className="py-8 space-y-8">
       <div className="text-center space-y-2">
-        <h1 className="text-4xl font-black text-[#3C3C3C]">Synonyms</h1>
-        <p className="text-[#777777] font-semibold">
+        <h1 className="font-serif text-4xl font-semibold text-[#1B1A17]">Synonyms</h1>
+        <p className="text-[#6B6860] font-semibold">
           Type a word to find synonyms in {selectedLanguage.name}
         </p>
       </div>
@@ -60,10 +60,10 @@ export function SynonymsPage() {
           <button
             key={lang.id}
             onClick={() => { setSelectedLanguage(lang); setQuery(''); }}
-            className={`px-5 py-2 rounded-xl font-bold text-sm border-2 border-b-4 transition-all active:border-b-0 active:translate-y-[2px] ${
+            className={`px-5 py-2 rounded-full font-semibold text-sm border transition-colors ${
               selectedLanguage.id === lang.id
-                ? 'border-b-4 text-white'
-                : 'bg-white border-[#E5E5E5] text-[#777777] hover:bg-[#F7F7F7]'
+                ? 'text-white'
+                : 'bg-white border-[#E3DFD4] text-[#6B6860] hover:bg-[#F1EDE4]'
             }`}
             style={
               selectedLanguage.id === lang.id
@@ -83,7 +83,7 @@ export function SynonymsPage() {
           value={query}
           onChange={e => setQuery(e.target.value)}
           placeholder={`Type a ${selectedLanguage.name} word…`}
-          className="w-full px-5 py-4 text-xl font-bold rounded-2xl border-2 border-b-4 border-[#E5E5E5] outline-none focus:border-[#CE82FF] transition-colors placeholder:text-[#C0C0C0] text-[#3C3C3C]"
+          className="w-full px-5 py-4 text-xl font-semibold rounded-2xl border border-[#E3DFD4] outline-none focus:border-[#9B8AA8] transition-colors placeholder:text-[#C0BCB2] text-[#1B1A17]"
           autoFocus
           spellCheck={false}
         />
@@ -92,18 +92,18 @@ export function SynonymsPage() {
       {/* Curated match (has translation) */}
       {match && (
         <div
-          className="max-w-md mx-auto rounded-2xl border-2 border-b-4 p-8 text-center space-y-4 transition-all"
-          style={{ borderColor: '#CE82FF', backgroundColor: '#F5F0FF' }}
+          className="max-w-md mx-auto rounded-2xl border p-8 text-center space-y-4 transition-all"
+          style={{ borderColor: '#9B8AA8', backgroundColor: '#EAE3EC' }}
         >
-          <div className="text-4xl font-black tracking-tight text-[#3C3C3C]">{match.word}</div>
-          <p className="text-[#777777] font-semibold">{match.translation}</p>
+          <div className="font-serif text-4xl font-semibold tracking-tight text-[#1B1A17]">{match.word}</div>
+          <p className="text-[#6B6860] font-semibold">{match.translation}</p>
           <div className="flex flex-wrap gap-2 justify-center">
             {match.synonyms.map(syn => (
               <button
                 key={syn}
                 onClick={() => setQuery(syn)}
-                className="px-3 py-1 rounded-full text-sm font-bold transition-colors"
-                style={{ backgroundColor: '#CE82FF22', color: '#CE82FF' }}
+                className="px-3 py-1 rounded-full text-sm font-semibold transition-colors"
+                style={{ backgroundColor: '#9B8AA822', color: '#9B8AA8' }}
               >
                 {syn}
               </button>
@@ -114,40 +114,40 @@ export function SynonymsPage() {
 
       {/* Wiktionary lookup — loading */}
       {!match && lookupState.status === 'loading' && (
-        <div className="max-w-md mx-auto rounded-2xl border-2 border-b-4 border-[#E5E5E5] p-6 text-center">
-          <p className="font-bold text-[#777777] animate-pulse">Looking up "{query.trim()}"…</p>
+        <div className="max-w-md mx-auto rounded-2xl border border-[#E3DFD4] p-6 text-center">
+          <p className="font-semibold text-[#6B6860] animate-pulse">Looking up "{query.trim()}"…</p>
         </div>
       )}
 
       {/* Wiktionary lookup — found */}
       {!match && lookupState.status === 'found' && (
         <div
-          className="max-w-md mx-auto rounded-2xl border-2 border-b-4 p-8 text-center space-y-4 transition-all"
-          style={{ borderColor: '#CE82FF', backgroundColor: '#F5F0FF' }}
+          className="max-w-md mx-auto rounded-2xl border p-8 text-center space-y-4 transition-all"
+          style={{ borderColor: '#9B8AA8', backgroundColor: '#EAE3EC' }}
         >
-          <div className="text-4xl font-black tracking-tight text-[#3C3C3C]">{query.trim()}</div>
+          <div className="font-serif text-4xl font-semibold tracking-tight text-[#1B1A17]">{query.trim()}</div>
           <div className="flex flex-wrap gap-2 justify-center">
             {lookupState.synonyms.map(syn => (
               <button
                 key={syn}
                 onClick={() => setQuery(syn)}
-                className="px-3 py-1 rounded-full text-sm font-bold transition-colors"
-                style={{ backgroundColor: '#CE82FF22', color: '#CE82FF' }}
+                className="px-3 py-1 rounded-full text-sm font-semibold transition-colors"
+                style={{ backgroundColor: '#9B8AA822', color: '#9B8AA8' }}
               >
                 {syn}
               </button>
             ))}
           </div>
-          <p className="text-xs text-[#AAAAAA]">via Wiktionary · no translation in our dictionary</p>
+          <p className="text-xs text-[#9B9689]">via Wiktionary · no translation in our dictionary</p>
         </div>
       )}
 
       {/* Not found */}
       {showNotFound && (
-        <div className="max-w-md mx-auto rounded-2xl border-2 border-b-4 border-[#E5E5E5] p-6 text-center space-y-2">
+        <div className="max-w-md mx-auto rounded-2xl border border-[#E3DFD4] p-6 text-center space-y-2">
           <p className="text-2xl">🤔</p>
-          <p className="font-bold text-[#3C3C3C]">No synonyms found</p>
-          <p className="text-sm text-[#777777]">Not found in Wiktionary — check the spelling?</p>
+          <p className="font-semibold text-[#1B1A17]">No synonyms found</p>
+          <p className="text-sm text-[#6B6860]">Not found in Wiktionary — check the spelling?</p>
         </div>
       )}
 
@@ -158,10 +158,10 @@ export function SynonymsPage() {
             <button
               key={s.id}
               onClick={() => setQuery(s.word)}
-              className="w-full flex items-center justify-between px-5 py-3 rounded-xl border-2 border-b-4 border-[#E5E5E5] bg-white hover:bg-[#F7F7F7] transition-colors text-left"
+              className="w-full flex items-center justify-between px-5 py-3 rounded-xl border border-[#E3DFD4] bg-white hover:bg-[#F1EDE4] transition-colors text-left"
             >
-              <span className="font-bold text-[#3C3C3C]">{s.word}</span>
-              <span className="text-sm text-[#777777]">{s.translation}</span>
+              <span className="font-semibold text-[#1B1A17]">{s.word}</span>
+              <span className="text-sm text-[#6B6860]">{s.translation}</span>
             </button>
           ))}
         </div>
@@ -170,16 +170,16 @@ export function SynonymsPage() {
       {/* Browse all */}
       {!trimmed && (
         <div className="max-w-2xl mx-auto space-y-3">
-          <h2 className="text-lg font-black text-[#3C3C3C] text-center">All words in our dictionary</h2>
+          <h2 className="font-serif text-lg font-semibold text-[#1B1A17] text-center">All words in our dictionary</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {langWords.map(s => (
               <button
                 key={s.id}
                 onClick={() => setQuery(s.word)}
-                className="flex items-center justify-between px-4 py-3 rounded-xl border-2 border-b-4 border-[#E5E5E5] bg-white hover:bg-[#F7F7F7] transition-colors text-left"
+                className="flex items-center justify-between px-4 py-3 rounded-xl border border-[#E3DFD4] bg-white hover:bg-[#F1EDE4] transition-colors text-left"
               >
-                <span className="font-bold text-[#3C3C3C]">{s.word}</span>
-                <span className="text-sm text-[#777777]">{s.translation}</span>
+                <span className="font-semibold text-[#1B1A17]">{s.word}</span>
+                <span className="text-sm text-[#6B6860]">{s.translation}</span>
               </button>
             ))}
           </div>

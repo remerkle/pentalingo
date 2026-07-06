@@ -68,9 +68,9 @@ export function ArticleQuiz() {
     return (
       <Card className="max-w-md mx-auto p-8 text-center space-y-4">
         <span className="text-4xl">{pct >= 80 ? '🎉' : pct >= 50 ? '👍' : '💪'}</span>
-        <h2 className="text-2xl font-black text-[#3C3C3C]">Quiz complete!</h2>
-        <p className="text-lg font-bold text-[#777777]">
-          You got <span className="text-[#58CC02]">{score}</span> / {questions.length} correct
+        <h2 className="font-serif text-2xl font-semibold text-[#1B1A17]">Quiz complete!</h2>
+        <p className="text-lg font-semibold text-[#6B6860]">
+          You got <span className="text-[#5F7256]">{score}</span> / {questions.length} correct
         </p>
         <Badge color={pct >= 80 ? 'green' : pct >= 50 ? 'orange' : 'red'}>{pct}%</Badge>
         <Button onClick={startQuiz} fullWidth>Play again</Button>
@@ -84,32 +84,32 @@ export function ArticleQuiz() {
 
   return (
     <div className="max-w-md mx-auto space-y-4">
-      <div className="flex items-center justify-between text-sm font-bold text-[#777777]">
+      <div className="flex items-center justify-between text-sm font-semibold text-[#6B6860]">
         <span>Question {index + 1} of {questions.length}</span>
         <span>Score: {score}</span>
       </div>
-      <ProgressBar value={index} max={questions.length} color="#1CB0F6" />
+      <ProgressBar value={index} max={questions.length} color="#7C93B0" />
 
       <Card className="p-8 text-center space-y-6">
-        <p className="text-xs font-bold text-[#777777] uppercase tracking-widest">Which article?</p>
-        <p className="text-4xl font-black text-[#3C3C3C]">{current.noun}</p>
+        <p className="text-xs font-semibold text-[#6B6860] uppercase tracking-widest">Which article?</p>
+        <p className="font-serif text-4xl font-semibold text-[#1B1A17]">{current.noun}</p>
 
         <div className={`grid ${gridCols} gap-3`}>
           {choices.map(choice => {
             const isCorrect = choice === current.article;
             const isSelected = selected === choice;
-            let style = 'bg-white border-[#E5E5E5] text-[#3C3C3C] hover:bg-[#F7F7F7]';
+            let style = 'bg-white border-[#E3DFD4] text-[#1B1A17] hover:bg-[#F1EDE4]';
             if (selected) {
-              if (isCorrect) style = 'bg-[#D7F5B1] border-[#46A302] text-[#46A302]';
-              else if (isSelected) style = 'bg-[#FFD4D4] border-[#FF4B4B] text-[#FF4B4B]';
-              else style = 'bg-white border-[#E5E5E5] text-[#C0C0C0]';
+              if (isCorrect) style = 'bg-[#E3E8DC] border-[#7A8F6E] text-[#5F7256]';
+              else if (isSelected) style = 'bg-[#F1DEDA] border-[#B85C4F] text-[#954A40]';
+              else style = 'bg-white border-[#E3DFD4] text-[#C0BCB2]';
             }
             return (
               <button
                 key={choice}
                 onClick={() => handleAnswer(choice)}
                 disabled={!!selected}
-                className={`py-6 text-2xl font-black rounded-2xl border-2 border-b-4 transition-all active:border-b-0 active:translate-y-[2px] disabled:active:translate-y-0 disabled:active:border-b-4 ${style}`}
+                className={`py-6 text-2xl font-semibold rounded-2xl border transition-colors ${style}`}
               >
                 {choice}
               </button>
@@ -118,8 +118,8 @@ export function ArticleQuiz() {
         </div>
 
         {selected && (
-          <p className="text-[#777777] font-semibold">
-            <span className="font-black text-[#3C3C3C]">{current.article} {current.noun}</span> — {current.translation}
+          <p className="text-[#6B6860] font-semibold">
+            <span className="font-semibold text-[#1B1A17]">{current.article} {current.noun}</span> — {current.translation}
           </p>
         )}
       </Card>

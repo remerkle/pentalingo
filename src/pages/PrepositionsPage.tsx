@@ -8,8 +8,8 @@ export function PrepositionsPage() {
   return (
     <div className="py-8 space-y-8">
       <div className="text-center space-y-2">
-        <h1 className="text-4xl font-black text-[#3C3C3C]">Prepositions</h1>
-        <p className="text-[#777777] font-semibold">
+        <h1 className="font-serif text-4xl font-semibold text-[#1B1A17]">Prepositions</h1>
+        <p className="text-[#6B6860] font-semibold">
           Fill in the blank with the correct {selectedLanguage.name} preposition
         </p>
       </div>
@@ -20,10 +20,10 @@ export function PrepositionsPage() {
           <button
             key={lang.id}
             onClick={() => setSelectedLanguage(lang)}
-            className={`px-5 py-2 rounded-xl font-bold text-sm border-2 border-b-4 transition-all active:border-b-0 active:translate-y-[2px] ${
+            className={`px-5 py-2 rounded-full font-semibold text-sm border transition-colors ${
               selectedLanguage.id === lang.id
-                ? 'border-b-4 text-white'
-                : 'bg-white border-[#E5E5E5] text-[#777777] hover:bg-[#F7F7F7]'
+                ? 'text-white'
+                : 'bg-white border-[#E3DFD4] text-[#6B6860] hover:bg-[#F1EDE4]'
             }`}
             style={
               selectedLanguage.id === lang.id

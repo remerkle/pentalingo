@@ -46,8 +46,8 @@ export function VerbTensesPage() {
   return (
     <div className="py-8 space-y-8">
       <div className="text-center space-y-2">
-        <h1 className="text-4xl font-black text-[#3C3C3C]">Verb Tenses</h1>
-        <p className="text-[#777777] font-semibold">
+        <h1 className="font-serif text-4xl font-semibold text-[#1B1A17]">Verb Tenses</h1>
+        <p className="text-[#6B6860] font-semibold">
           The 100 most common {selectedLanguage.name} verbs, fully conjugated
         </p>
       </div>
@@ -58,10 +58,10 @@ export function VerbTensesPage() {
           <button
             key={lang.id}
             onClick={() => setSelectedLanguage(lang)}
-            className={`px-5 py-2 rounded-xl font-bold text-sm border-2 border-b-4 transition-all active:border-b-0 active:translate-y-[2px] ${
+            className={`px-5 py-2 rounded-full font-semibold text-sm border transition-colors ${
               selectedLanguage.id === lang.id
-                ? 'border-b-4 text-white'
-                : 'bg-white border-[#E5E5E5] text-[#777777] hover:bg-[#F7F7F7]'
+                ? 'text-white'
+                : 'bg-white border-[#E3DFD4] text-[#6B6860] hover:bg-[#F1EDE4]'
             }`}
             style={
               selectedLanguage.id === lang.id
@@ -76,7 +76,7 @@ export function VerbTensesPage() {
 
       {!verb ? (
         <Card className="max-w-md mx-auto p-8 text-center">
-          <p className="font-bold text-[#777777]">No verbs yet for {selectedLanguage.name}.</p>
+          <p className="font-semibold text-[#6B6860]">No verbs yet for {selectedLanguage.name}.</p>
         </Card>
       ) : (
         <div className="max-w-md mx-auto space-y-6">
@@ -86,11 +86,11 @@ export function VerbTensesPage() {
               ← Prev
             </Button>
             <Card className="flex-1 p-5 text-center" accent={selectedLanguage.color}>
-              <p className="text-xs font-bold text-[#777777] uppercase tracking-widest">
+              <p className="text-xs font-semibold text-[#6B6860] uppercase tracking-widest">
                 Verb {index + 1} of {verbs.length}
               </p>
-              <p className="text-3xl font-black text-[#3C3C3C] mt-1">{verb.infinitive}</p>
-              <p className="text-[#777777] font-semibold">{verb.translation}</p>
+              <p className="font-serif text-3xl font-semibold text-[#1B1A17] mt-1">{verb.infinitive}</p>
+              <p className="text-[#6B6860] font-semibold">{verb.translation}</p>
             </Card>
             <Button variant="secondary" size="sm" onClick={() => goTo(index + 1)} disabled={index === verbs.length - 1}>
               Next →
@@ -104,18 +104,18 @@ export function VerbTensesPage() {
                 <Card
                   onClick={() => toggle(key)}
                   className="p-4 flex items-center justify-between"
-                  accent={expanded.has(key) ? '#1CB0F6' : undefined}
+                  accent={expanded.has(key) ? '#7C93B0' : undefined}
                 >
-                  <span className="font-black text-[#3C3C3C]">{tenseLabels[key]}</span>
-                  <span className="text-[#777777]">{expanded.has(key) ? '▲' : '▼'}</span>
+                  <span className="font-semibold text-[#1B1A17]">{tenseLabels[key]}</span>
+                  <span className="text-[#6B6860]">{expanded.has(key) ? '▲' : '▼'}</span>
                 </Card>
 
                 {expanded.has(key) && (
                   <Card className="mt-2 p-4 space-y-1.5">
                     {persons.map((label, i) => (
                       <div key={label} className="flex items-center justify-between text-sm">
-                        <span className="text-[#777777] font-semibold">{label}</span>
-                        <span className="font-bold text-[#3C3C3C]">{verb[key][i]}</span>
+                        <span className="text-[#6B6860] font-semibold">{label}</span>
+                        <span className="font-semibold text-[#1B1A17]">{verb[key][i]}</span>
                       </div>
                     ))}
                   </Card>
@@ -128,10 +128,10 @@ export function VerbTensesPage() {
               <Card
                 onClick={() => toggle('all')}
                 className="p-4 flex items-center justify-between"
-                accent={expanded.has('all') ? '#CE82FF' : undefined}
+                accent={expanded.has('all') ? '#9B8AA8' : undefined}
               >
-                <span className="font-black text-[#3C3C3C]">📋 All Tenses</span>
-                <span className="text-[#777777]">{expanded.has('all') ? '▲' : '▼'}</span>
+                <span className="font-semibold text-[#1B1A17]">📋 All Tenses</span>
+                <span className="text-[#6B6860]">{expanded.has('all') ? '▲' : '▼'}</span>
               </Card>
 
               {expanded.has('all') && (
@@ -139,9 +139,9 @@ export function VerbTensesPage() {
                   <table className="w-full text-sm border-collapse">
                     <thead>
                       <tr>
-                        <th className="text-left font-black text-[#3C3C3C] pb-2 pr-3">Tense</th>
+                        <th className="text-left font-semibold text-[#1B1A17] pb-2 pr-3">Tense</th>
                         {persons.map(label => (
-                          <th key={label} className="text-left font-bold text-[#777777] pb-2 px-2 whitespace-nowrap">
+                          <th key={label} className="text-left font-semibold text-[#6B6860] pb-2 px-2 whitespace-nowrap">
                             {label}
                           </th>
                         ))}
@@ -149,10 +149,10 @@ export function VerbTensesPage() {
                     </thead>
                     <tbody>
                       {TENSE_KEYS.map(key => (
-                        <tr key={key} className="border-t border-[#E5E5E5]">
-                          <td className="py-2 pr-3 font-bold text-[#3C3C3C] whitespace-nowrap">{tenseLabels[key]}</td>
+                        <tr key={key} className="border-t border-[#E3DFD4]">
+                          <td className="py-2 pr-3 font-semibold text-[#1B1A17] whitespace-nowrap">{tenseLabels[key]}</td>
                           {verb[key].map((form, i) => (
-                            <td key={i} className="py-2 px-2 text-[#3C3C3C] whitespace-nowrap">{form}</td>
+                            <td key={i} className="py-2 px-2 text-[#1B1A17] whitespace-nowrap">{form}</td>
                           ))}
                         </tr>
                       ))}
@@ -170,7 +170,7 @@ export function VerbTensesPage() {
         <div className="max-w-2xl mx-auto space-y-3">
           <button
             onClick={() => setShowAllVerbs(v => !v)}
-            className="w-full text-center font-black text-[#3C3C3C] hover:text-[#1CB0F6] transition-colors"
+            className="w-full text-center font-semibold text-[#1B1A17] hover:text-[#7C93B0] transition-colors"
           >
             {showAllVerbs ? '▲ Hide' : '▼ Browse'} all {verbs.length} verbs
           </button>
@@ -180,14 +180,14 @@ export function VerbTensesPage() {
                 <button
                   key={v.id}
                   onClick={() => goTo(i)}
-                  className={`flex items-center justify-between px-4 py-3 rounded-xl border-2 border-b-4 transition-colors text-left ${
+                  className={`flex items-center justify-between px-4 py-3 rounded-xl border transition-colors text-left ${
                     i === index
-                      ? 'bg-[#D7F5B1] border-[#46A302]'
-                      : 'bg-white border-[#E5E5E5] hover:bg-[#F7F7F7]'
+                      ? 'bg-[#E3E8DC] border-[#7A8F6E]'
+                      : 'bg-white border-[#E3DFD4] hover:bg-[#F1EDE4]'
                   }`}
                 >
-                  <span className="font-bold text-[#3C3C3C]">{v.infinitive}</span>
-                  <span className="text-xs text-[#777777]">{v.translation}</span>
+                  <span className="font-semibold text-[#1B1A17]">{v.infinitive}</span>
+                  <span className="text-xs text-[#6B6860]">{v.translation}</span>
                 </button>
               ))}
             </div>

@@ -22,9 +22,9 @@ export function Header() {
   }, [updateScrollFades]);
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b-2 border-[#E5E5E5] overflow-x-hidden">
+    <header className="sticky top-0 z-50 bg-[#F7F4EE] border-b border-[#E3DFD4] overflow-x-hidden">
       <div className="max-w-4xl mx-auto px-3 sm:px-4 h-16 flex items-center gap-2">
-        <NavLink to="/" className="shrink-0 text-lg sm:text-2xl font-black text-[#58CC02] tracking-tight">
+        <NavLink to="/" className="shrink-0 text-lg sm:text-2xl font-serif font-semibold text-[#1B1A17] tracking-tight">
           Pentalingo
         </NavLink>
 
@@ -46,10 +46,10 @@ export function Header() {
                 key={to}
                 to={to}
                 className={({ isActive }) =>
-                  `shrink-0 whitespace-nowrap px-2 sm:px-4 py-2 rounded-xl font-bold text-xs sm:text-sm transition-colors ${
+                  `shrink-0 whitespace-nowrap px-2 sm:px-4 py-2 rounded-xl font-semibold text-xs sm:text-sm transition-colors ${
                     isActive
-                      ? 'bg-[#D7F5B1] text-[#46A302]'
-                      : 'text-[#777777] hover:bg-[#F7F7F7]'
+                      ? 'text-[#1B1A17]'
+                      : 'text-[#6B6860] hover:text-[#1B1A17]'
                   }`
                 }
               >
@@ -58,18 +58,18 @@ export function Header() {
             ))}
           </nav>
           {canScrollLeft && (
-            <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-white to-transparent" />
+            <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-[#F7F4EE] to-transparent" />
           )}
           {canScrollRight && (
-            <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-white to-transparent" />
+            <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-[#F7F4EE] to-transparent" />
           )}
         </div>
 
         <div className="shrink-0 flex items-center gap-2 sm:gap-4">
-          <span className="flex items-center gap-1 font-bold text-xs sm:text-base text-[#FF9600] whitespace-nowrap">
+          <span className="flex items-center gap-1 font-semibold text-xs sm:text-base text-[#D3A15C] whitespace-nowrap">
             🔥 {progress.streak}
           </span>
-          <span className="flex items-center gap-1 font-bold text-xs sm:text-base text-[#FFD900] whitespace-nowrap">
+          <span className="flex items-center gap-1 font-semibold text-xs sm:text-base text-[#D97757] whitespace-nowrap">
             ⚡ {progress.xp} XP
           </span>
         </div>

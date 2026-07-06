@@ -6,11 +6,11 @@ import { lookupDutchArticle } from '../utils/dutchGender';
 import { ArticleQuiz, QUIZ_ARTICLES } from '../components/articles/ArticleQuiz';
 
 const GENDER_COLORS: Record<string, { bg: string; text: string; label: string }> = {
-  masculine:  { bg: '#EFF8FF', text: '#1CB0F6', label: 'masculine' },
-  feminine:   { bg: '#FFF0F0', text: '#FF4B4B', label: 'feminine' },
-  neuter:     { bg: '#F5F0FF', text: '#CE82FF', label: 'neuter' },
-  common:     { bg: '#EFF8FF', text: '#1CB0F6', label: 'common' },
-  indefinite: { bg: '#F0FBE8', text: '#46A302', label: '' },
+  masculine:  { bg: '#E4EAF0', text: '#7C93B0', label: 'masculine' },
+  feminine:   { bg: '#F0E0DA', text: '#BC7F6D', label: 'feminine' },
+  neuter:     { bg: '#EAE3EC', text: '#9B8AA8', label: 'neuter' },
+  common:     { bg: '#E4EAF0', text: '#7C93B0', label: 'common' },
+  indefinite: { bg: '#E3E8DC', text: '#5F7256', label: '' },
 };
 
 type LookupState =
@@ -71,8 +71,8 @@ export function ArticlesPage() {
   return (
     <div className="py-8 space-y-8">
       <div className="text-center space-y-2">
-        <h1 className="text-4xl font-black text-[#3C3C3C]">Article Checker</h1>
-        <p className="text-[#777777] font-semibold">
+        <h1 className="font-serif text-4xl font-semibold text-[#1B1A17]">Article Checker</h1>
+        <p className="text-[#6B6860] font-semibold">
           {isEnglish
             ? 'Type a noun to find out whether to use "a" or "an"'
             : `Type a noun to find the correct article in ${selectedLanguage.name}`}
@@ -85,10 +85,10 @@ export function ArticlesPage() {
           <button
             key={lang.id}
             onClick={() => { setSelectedLanguage(lang); setQuery(''); }}
-            className={`px-5 py-2 rounded-xl font-bold text-sm border-2 border-b-4 transition-all active:border-b-0 active:translate-y-[2px] ${
+            className={`px-5 py-2 rounded-full font-semibold text-sm border transition-colors ${
               selectedLanguage.id === lang.id
-                ? 'border-b-4 text-white'
-                : 'bg-white border-[#E5E5E5] text-[#777777] hover:bg-[#F7F7F7]'
+                ? 'text-white'
+                : 'bg-white border-[#E3DFD4] text-[#6B6860] hover:bg-[#F1EDE4]'
             }`}
             style={
               selectedLanguage.id === lang.id
@@ -107,10 +107,10 @@ export function ArticlesPage() {
           <button
             key={m}
             onClick={() => { setMode(m); setQuery(''); }}
-            className={`px-5 py-2 rounded-xl font-bold text-sm border-2 border-b-4 transition-all active:border-b-0 active:translate-y-[2px] ${
+            className={`px-5 py-2 rounded-full font-semibold text-sm border transition-colors ${
               mode === m
-                ? 'bg-[#1CB0F6] border-[#1CB0F6] text-white'
-                : 'bg-white border-[#E5E5E5] text-[#777777] hover:bg-[#F7F7F7]'
+                ? 'bg-[#1B1A17] border-[#1B1A17] text-white'
+                : 'bg-white border-[#E3DFD4] text-[#6B6860] hover:bg-[#F1EDE4]'
             }`}
           >
             {m === 'lookup' ? 'Look up' : `📝 ${QUIZ_ARTICLES[selectedLanguage.id]?.join('/')} Quiz`}
@@ -129,7 +129,7 @@ export function ArticlesPage() {
           value={query}
           onChange={e => setQuery(e.target.value)}
           placeholder={`Type a ${selectedLanguage.name} noun…`}
-          className="w-full px-5 py-4 text-xl font-bold rounded-2xl border-2 border-b-4 border-[#E5E5E5] outline-none focus:border-[#1CB0F6] transition-colors placeholder:text-[#C0C0C0] text-[#3C3C3C]"
+          className="w-full px-5 py-4 text-xl font-semibold rounded-2xl border border-[#E3DFD4] outline-none focus:border-[#7C93B0] transition-colors placeholder:text-[#C0BCB2] text-[#1B1A17]"
           autoFocus
           spellCheck={false}
         />
@@ -138,30 +138,30 @@ export function ArticlesPage() {
       {/* Curated match (has translation) */}
       {match && curatedColors && (
         <div
-          className="max-w-md mx-auto rounded-2xl border-2 border-b-4 p-8 text-center space-y-3 transition-all"
+          className="max-w-md mx-auto rounded-2xl border p-8 text-center space-y-3 transition-all"
           style={{ borderColor: curatedColors.text, backgroundColor: curatedColors.bg }}
         >
-          <div className="text-6xl font-black tracking-tight">
+          <div className="font-serif text-6xl font-semibold tracking-tight">
             <span style={{ color: curatedColors.text }}>{match.article}</span>
-            <span className="text-[#3C3C3C]"> {match.noun}</span>
+            <span className="text-[#1B1A17]"> {match.noun}</span>
           </div>
-          <p className="text-[#777777] font-semibold text-lg">{match.translation}</p>
+          <p className="text-[#6B6860] font-semibold text-lg">{match.translation}</p>
           {curatedColors.label && (
             <span
-              className="inline-block px-3 py-1 rounded-full text-sm font-bold"
+              className="inline-block px-3 py-1 rounded-full text-sm font-semibold"
               style={{ backgroundColor: curatedColors.text + '22', color: curatedColors.text }}
             >
               {curatedColors.label}
             </span>
           )}
           {isEnglish && (
-            <p className="text-sm text-[#777777]">
+            <p className="text-sm text-[#6B6860]">
               Use <strong>"{match.article}"</strong> because "{match.noun}"{' '}
               {match.article === 'an' ? 'starts with a vowel sound' : 'starts with a consonant sound'}
             </p>
           )}
           {selectedLanguage.id === 'es' && match.noun === 'agua' && (
-            <p className="text-sm text-[#777777]">
+            <p className="text-sm text-[#6B6860]">
               Note: "agua" is feminine but uses "el" in singular to avoid the double-a sound
             </p>
           )}
@@ -170,39 +170,39 @@ export function ArticlesPage() {
 
       {/* Wiktionary lookup — loading */}
       {!match && isDutch && lookupState.status === 'loading' && (
-        <div className="max-w-md mx-auto rounded-2xl border-2 border-b-4 border-[#E5E5E5] p-6 text-center">
-          <p className="font-bold text-[#777777] animate-pulse">Looking up "{query.trim()}"…</p>
+        <div className="max-w-md mx-auto rounded-2xl border border-[#E3DFD4] p-6 text-center">
+          <p className="font-semibold text-[#6B6860] animate-pulse">Looking up "{query.trim()}"…</p>
         </div>
       )}
 
       {/* Wiktionary lookup — found */}
       {!match && isDutch && lookupState.status === 'found' && wiktColors && (
         <div
-          className="max-w-md mx-auto rounded-2xl border-2 border-b-4 p-8 text-center space-y-3 transition-all"
+          className="max-w-md mx-auto rounded-2xl border p-8 text-center space-y-3 transition-all"
           style={{ borderColor: wiktColors.text, backgroundColor: wiktColors.bg }}
         >
-          <div className="text-6xl font-black tracking-tight">
+          <div className="font-serif text-6xl font-semibold tracking-tight">
             <span style={{ color: wiktColors.text }}>{lookupState.article}</span>
-            <span className="text-[#3C3C3C]"> {query.trim()}</span>
+            <span className="text-[#1B1A17]"> {query.trim()}</span>
           </div>
           {wiktColors.label && (
             <span
-              className="inline-block px-3 py-1 rounded-full text-sm font-bold"
+              className="inline-block px-3 py-1 rounded-full text-sm font-semibold"
               style={{ backgroundColor: wiktColors.text + '22', color: wiktColors.text }}
             >
               {wiktColors.label}
             </span>
           )}
-          <p className="text-xs text-[#AAAAAA]">via Wiktionary · no translation in our dictionary</p>
+          <p className="text-xs text-[#9B9689]">via Wiktionary · no translation in our dictionary</p>
         </div>
       )}
 
       {/* Not found */}
       {showNotFound && (
-        <div className="max-w-md mx-auto rounded-2xl border-2 border-b-4 border-[#E5E5E5] p-6 text-center space-y-2">
+        <div className="max-w-md mx-auto rounded-2xl border border-[#E3DFD4] p-6 text-center space-y-2">
           <p className="text-2xl">🤔</p>
-          <p className="font-bold text-[#3C3C3C]">Noun not found</p>
-          <p className="text-sm text-[#777777]">
+          <p className="font-semibold text-[#1B1A17]">Noun not found</p>
+          <p className="text-sm text-[#6B6860]">
             {isDutch
               ? 'Not found in Wiktionary — check the spelling?'
               : 'Not in our dictionary yet — try one of the nouns below'}
@@ -219,12 +219,12 @@ export function ArticlesPage() {
               <button
                 key={s.id}
                 onClick={() => setQuery(s.noun)}
-                className="w-full flex items-center justify-between px-5 py-3 rounded-xl border-2 border-b-4 border-[#E5E5E5] bg-white hover:bg-[#F7F7F7] transition-colors text-left"
+                className="w-full flex items-center justify-between px-5 py-3 rounded-xl border border-[#E3DFD4] bg-white hover:bg-[#F1EDE4] transition-colors text-left"
               >
-                <span className="font-bold text-[#3C3C3C]">
+                <span className="font-semibold text-[#1B1A17]">
                   <span style={{ color: c.text }}>{s.article}</span> {s.noun}
                 </span>
-                <span className="text-sm text-[#777777]">{s.translation}</span>
+                <span className="text-sm text-[#6B6860]">{s.translation}</span>
               </button>
             );
           })}
@@ -234,7 +234,7 @@ export function ArticlesPage() {
       {/* Browse all */}
       {!trimmed && (
         <div className="max-w-2xl mx-auto space-y-3">
-          <h2 className="text-lg font-black text-[#3C3C3C] text-center">All nouns in our dictionary</h2>
+          <h2 className="font-serif text-lg font-semibold text-[#1B1A17] text-center">All nouns in our dictionary</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {langNouns.map(n => {
               const c = GENDER_COLORS[n.gender];
@@ -242,12 +242,12 @@ export function ArticlesPage() {
                 <button
                   key={n.id}
                   onClick={() => setQuery(n.noun)}
-                  className="flex items-center justify-between px-4 py-3 rounded-xl border-2 border-b-4 border-[#E5E5E5] bg-white hover:bg-[#F7F7F7] transition-colors text-left"
+                  className="flex items-center justify-between px-4 py-3 rounded-xl border border-[#E3DFD4] bg-white hover:bg-[#F1EDE4] transition-colors text-left"
                 >
-                  <span className="font-bold text-[#3C3C3C]">
+                  <span className="font-semibold text-[#1B1A17]">
                     <span style={{ color: c.text }}>{n.article}</span> {n.noun}
                   </span>
-                  <span className="text-sm text-[#777777]">{n.translation}</span>
+                  <span className="text-sm text-[#6B6860]">{n.translation}</span>
                 </button>
               );
             })}

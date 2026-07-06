@@ -5,16 +5,24 @@ interface CardProps {
   className?: string;
   onClick?: (e: MouseEvent<HTMLDivElement>) => void;
   accent?: string;
+  /** Render as a solid accent-tinted block (no border) instead of a bordered white card. */
+  tinted?: boolean;
 }
 
-export function Card({ children, className = '', onClick, accent }: CardProps) {
+export function Card({ children, className = '', onClick, accent, tinted = false }: CardProps) {
+  const style = tinted
+    ? (accent ? { backgroundColor: accent } : undefined)
+    : (accent ? { borderLeftColor: accent } : undefined);
+
   return (
     <div
       onClick={onClick}
-      style={accent ? { borderBottomColor: accent } : undefined}
+      style={style}
       className={[
-        'bg-white rounded-2xl border-2 border-[#E5E5E5] border-b-4 p-4',
-        onClick ? 'cursor-pointer hover:bg-[#F7F7F7] transition-colors' : '',
+        'rounded-2xl p-4 transition-all duration-150',
+        tinted ? '' : 'bg-white border border-[#E3DFD4]',
+        accent && !tinted ? 'border-l-4' : '',
+        onClick ? 'cursor-pointer hover:brightness-95' : '',
         className,
       ].join(' ')}
     >

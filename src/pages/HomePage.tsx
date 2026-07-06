@@ -17,11 +17,11 @@ export function HomePage() {
     <div className="flex flex-col items-center gap-12">
       {/* Hero */}
       <section className="text-center pt-8 flex flex-col items-center gap-6">
-        <h1 className="text-6xl font-black text-[#3C3C3C] tracking-tight">
-          Learn 5 languages.<br />
-          <span className="text-[#58CC02]">One app.</span>
+        <h1 className="font-serif text-6xl font-semibold text-[#1B1A17] tracking-tight">
+          Learn 4 languages.<br />
+          <span className="text-[#D97757]">One app.</span>
         </h1>
-        <p className="text-xl text-[#777777] max-w-md">
+        <p className="text-xl text-[#6B6860] max-w-md">
           Spaced flashcards, article checks, and synonym lookups — all designed to keep you coming back.
         </p>
         <div className="flex gap-4">
@@ -36,7 +36,7 @@ export function HomePage() {
 
       {/* Language picker */}
       <section className="w-full">
-        <h2 className="text-2xl font-black text-[#3C3C3C] mb-6 text-center">Choose your language</h2>
+        <h2 className="font-serif text-2xl font-semibold text-[#1B1A17] mb-6 text-center">Choose your language</h2>
         <div className="grid grid-cols-4 gap-4">
           {LANGUAGES.map(lang => (
             <Card
@@ -46,7 +46,7 @@ export function HomePage() {
               className="flex flex-col items-center gap-2 p-6 text-center"
             >
               <span className="text-4xl">{lang.flag}</span>
-              <span className="font-black text-[#3C3C3C]">{lang.name}</span>
+              <span className="font-semibold text-[#1B1A17]">{lang.name}</span>
             </Card>
           ))}
         </div>
@@ -55,14 +55,14 @@ export function HomePage() {
       {/* Feature highlights */}
       <section className="w-full grid grid-cols-3 gap-6 pb-8">
         {[
-          { emoji: '🃏', title: 'Smart Flashcards', desc: 'Spaced repetition keeps vocabulary fresh',    color: '#1CB0F6' },
-          { emoji: '📝', title: 'Article Checker',  desc: 'Look up the correct article for any noun',    color: '#58CC02' },
-          { emoji: '🔤', title: 'Synonyms',         desc: 'Expand your vocabulary with related words',   color: '#CE82FF' },
+          { emoji: '🃏', title: 'Smart Flashcards', desc: 'Spaced repetition keeps vocabulary fresh',    color: '#E4EAF0' },
+          { emoji: '📝', title: 'Article Checker',  desc: 'Look up the correct article for any noun',    color: '#E5EBDF' },
+          { emoji: '🔤', title: 'Synonyms',         desc: 'Expand your vocabulary with related words',   color: '#EAE3EC' },
         ].map(f => (
-          <Card key={f.title} accent={f.color} className="flex flex-col gap-3 p-6">
+          <Card key={f.title} accent={f.color} tinted className="flex flex-col gap-3 p-6">
             <span className="text-3xl">{f.emoji}</span>
-            <h3 className="text-lg font-black text-[#3C3C3C]">{f.title}</h3>
-            <p className="text-[#777777] text-sm">{f.desc}</p>
+            <h3 className="font-serif text-lg font-semibold text-[#1B1A17]">{f.title}</h3>
+            <p className="text-[#6B6860] text-sm">{f.desc}</p>
           </Card>
         ))}
       </section>

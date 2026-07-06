@@ -9,17 +9,17 @@ interface BadgeProps {
 }
 
 const colors: Record<BadgeColor, string> = {
-  green:  'bg-[#D7F5B1] text-[#46A302]',
-  orange: 'bg-[#FFE8C0] text-[#CC7A00]',
-  blue:   'bg-[#C8EDFF] text-[#1599D0]',
-  red:    'bg-[#FFD4D4] text-[#CC3B3B]',
-  purple: 'bg-[#F0D9FF] text-[#9B59B6]',
-  yellow: 'bg-[#FFF8C0] text-[#CC9A00]',
+  green:  'bg-[#E3E8DC] text-[#5F7256]',
+  orange: 'bg-[#F3E7D3] text-[#A17B3E]',
+  blue:   'bg-[#E4EAF0] text-[#5A7595]',
+  red:    'bg-[#F1DEDA] text-[#954A40]',
+  purple: 'bg-[#EAE3EC] text-[#7A6A86]',
+  yellow: 'bg-[#F3E2D9] text-[#B85C3E]',
 };
 
 export function Badge({ children, color = 'green', className = '' }: BadgeProps) {
   return (
-    <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-bold ${colors[color]} ${className}`}>
+    <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-semibold ${colors[color]} ${className}`}>
       {children}
     </span>
   );

@@ -108,15 +108,15 @@ export function FlashcardsPage() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-black text-[#3C3C3C]">Flashcards</h1>
+        <h1 className="font-serif text-3xl font-semibold text-[#1B1A17]">Flashcards</h1>
         <div className="flex gap-2">
           {LANGUAGES.map(lang => (
             <button
               key={lang.id}
               onClick={() => setSelectedLanguage(lang)}
               style={selectedLanguage.id === lang.id ? { backgroundColor: lang.color, color: 'white' } : {}}
-              className={`px-3 py-1.5 rounded-xl font-bold text-sm border-2 transition-colors ${
-                selectedLanguage.id === lang.id ? 'border-transparent' : 'border-[#E5E5E5] text-[#777777] hover:bg-[#F7F7F7]'
+              className={`px-3 py-1.5 rounded-full font-semibold text-sm border transition-colors ${
+                selectedLanguage.id === lang.id ? 'border-transparent' : 'border-[#E3DFD4] text-[#6B6860] hover:bg-[#F1EDE4]'
               }`}
             >
               {lang.flag}
@@ -128,12 +128,12 @@ export function FlashcardsPage() {
       {cards.length === 0 ? (
         <Card className="p-12 text-center">
           <p className="text-2xl mb-2">🃏</p>
-          <p className="font-bold text-[#777777]">No flashcards yet for {selectedLanguage.name}.</p>
+          <p className="font-semibold text-[#6B6860]">No flashcards yet for {selectedLanguage.name}.</p>
         </Card>
       ) : (
         <>
           {/* Progress */}
-          <div className="flex items-center justify-between text-sm font-bold text-[#777777]">
+          <div className="flex items-center justify-between text-sm font-semibold text-[#6B6860]">
             <span>{ratedIds.size} of {cards.length} reviewed</span>
             <Badge color="purple">🃏 {selectedLanguage.name} · {pool.length} words available</Badge>
           </div>
@@ -147,13 +147,13 @@ export function FlashcardsPage() {
                 <Card
                   key={c.id}
                   onClick={() => toggleFlip(c.id)}
-                  accent={rated ? '#46A302' : '#CE82FF'}
+                  accent={rated ? '#7A8F6E' : '#9B8AA8'}
                   className="min-h-40 flex flex-col items-center justify-center gap-3 cursor-pointer select-none p-6"
                 >
-                  <p className="text-xs font-bold text-[#777777] uppercase tracking-widest">
+                  <p className="text-xs font-semibold text-[#6B6860] uppercase tracking-widest">
                     {flipped ? 'Translation' : 'Tap to reveal'}
                   </p>
-                  <p className="text-2xl font-black text-[#3C3C3C] text-center">
+                  <p className="font-serif text-2xl font-semibold text-[#1B1A17] text-center">
                     {flipped ? c.back : c.front}
                   </p>
 
@@ -166,7 +166,7 @@ export function FlashcardsPage() {
           {allRated && (
             <Card className="p-8 text-center flex flex-col items-center gap-3">
               <span className="text-4xl">🎉</span>
-              <p className="font-black text-[#3C3C3C]">All caught up!</p>
+              <p className="font-serif font-semibold text-[#1B1A17]">All caught up!</p>
               <Button onClick={startSession}>New words</Button>
             </Card>
           )}
@@ -175,39 +175,39 @@ export function FlashcardsPage() {
 
       {/* Add a word — falls back to Wiktionary for anything beyond the curated deck */}
       <Card className="p-5 flex flex-col gap-3">
-        <h2 className="font-black text-[#3C3C3C]">Add a word to this session</h2>
+        <h2 className="font-serif font-semibold text-[#1B1A17]">Add a word to this session</h2>
         <input
           type="text"
           value={addQuery}
           onChange={e => setAddQuery(e.target.value)}
           placeholder={`Type a ${selectedLanguage.name} word…`}
-          className="w-full px-4 py-3 font-bold rounded-xl border-2 border-b-4 border-[#E5E5E5] outline-none focus:border-[#CE82FF] transition-colors placeholder:text-[#C0C0C0] text-[#3C3C3C]"
+          className="w-full px-4 py-3 font-semibold rounded-xl border border-[#E3DFD4] outline-none focus:border-[#9B8AA8] transition-colors placeholder:text-[#C0BCB2] text-[#1B1A17]"
           spellCheck={false}
         />
 
         {trimmedAddQuery && alreadyInSession && (
-          <p className="text-sm font-bold text-[#777777]">Already in this session.</p>
+          <p className="text-sm font-semibold text-[#6B6860]">Already in this session.</p>
         )}
 
         {!alreadyInSession && lookupState.status === 'loading' && (
-          <p className="text-sm font-bold text-[#777777] animate-pulse">Looking up "{addQuery.trim()}"…</p>
+          <p className="text-sm font-semibold text-[#6B6860] animate-pulse">Looking up "{addQuery.trim()}"…</p>
         )}
 
         {!alreadyInSession && lookupState.status === 'found' && (
-          <div className="flex items-center justify-between gap-4 p-4 rounded-xl border-2 border-b-4" style={{ borderColor: '#CE82FF', backgroundColor: '#F5F0FF' }}>
+          <div className="flex items-center justify-between gap-4 p-4 rounded-xl border" style={{ borderColor: '#9B8AA8', backgroundColor: '#EAE3EC' }}>
             <div>
-              <p className="font-black text-[#3C3C3C]">{addQuery.trim()}</p>
-              <p className="text-sm text-[#777777]">{lookupState.translation}</p>
+              <p className="font-semibold text-[#1B1A17]">{addQuery.trim()}</p>
+              <p className="text-sm text-[#6B6860]">{lookupState.translation}</p>
             </div>
             <Button size="sm" onClick={handleAddToSession}>Add</Button>
           </div>
         )}
 
         {!alreadyInSession && lookupState.status === 'not-found' && (
-          <p className="text-sm font-bold text-[#777777]">Not found in Wiktionary — check the spelling?</p>
+          <p className="text-sm font-semibold text-[#6B6860]">Not found in Wiktionary — check the spelling?</p>
         )}
 
-        <p className="text-xs text-[#AAAAAA]">via Wiktionary · added words apply to this session only</p>
+        <p className="text-xs text-[#9B9689]">via Wiktionary · added words apply to this session only</p>
       </Card>
     </div>
   );
